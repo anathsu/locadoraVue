@@ -1,7 +1,13 @@
 <template>
   <div id="app">
     <h2>{{ msg }}</h2>
-    <HelloWorld msg="Hello!"/>
+    <HelloWorld msg="Bem vindo a locadora de Filmes!"/>
+
+    
+
+    <div class="horas">
+      <p>{{dia()}}</p>
+    </div>
   </div>
 </template>
 
@@ -14,7 +20,18 @@ export default {
     HelloWorld
   }, data(){
     return {
-      title: "Locado de Filmes"
+      title: "Locado de Filmes",
+      horas: new Date().getHours()
+    }
+  }, methods:{
+    dia(){
+      if(this.horas < 12){
+        return "Está de dia";
+      }else if(this.horas >=12 && this.horas < 18){
+        return "Está de tarde";
+      }else if(this.horas > 18){
+        return "Está de noite";
+      }
     }
   }
 }

@@ -1,14 +1,29 @@
 <template>
-  <div id="app">
+  <!-- <div id="app">
     <h2>{{ msg }}</h2>
     <HelloWorld msg="Bem vindo a locadora de Filmes!"/>
-
-    
 
     <div class="horas">
       <p>{{dia()}}</p>
     </div>
-  </div>
+
+  </div> -->
+  <b-container>
+    <b-row>
+      <h2>{{ msg }}</h2>
+    </b-row>
+
+    <b-row>
+      <HelloWorld msg="Bem vindo a locadora de Filmes!"/>
+    </b-row>
+
+    <b-row>
+      <p>{{dia()}}</p>
+    </b-row>
+
+  </b-container>
+
+
 </template>
 
 <script>
@@ -42,6 +57,13 @@ export default {
 </script>
 
 <style>
+
+.row{
+  justify-content: center;
+}
+
+
+
 /* #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

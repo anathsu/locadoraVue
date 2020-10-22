@@ -14,18 +14,19 @@
     <div class="usuarioLogado">
       Olá {{nomeCompleto}} | Carrinho: {{quantidadeNoCarrinho}} filmes
     </div>
-    
-
-    <!-- <b-row>
-      <h2>{{ msg }}</h2>
-    </b-row> -->
 
     <b-row>
       <HelloWorld msg="Filmes encontrados"/>
     </b-row>
 
-    <b-row>
+    <!-- <b-row>
       <p>{{dia()}}</p>
+    </b-row> -->
+
+    <b-row>
+      <h3 v-if="horas >= 9 && horas < 17" id="aberta">ABERTO</h3>
+      <h3 v-else-if="horas >= 17 && horas < 18" id="proxima-fechar">PRÓXIMA DE FECHAR</h3>
+      <h3 v-else id="fechada">FECHADA</h3>
     </b-row>
 
     <b-row>
@@ -42,10 +43,6 @@
           <b-card-text>
             {{filme.descricao | maiuscula()}}
           </b-card-text>
-
-          <!-- <b-card-text>
-            {{filme.valor | formatarPreco("R$")}}
-          </b-card-text> -->
 
           <b-button v-if="filme.estoqueDisponivel > 0" class="btn" @click="adicionarAoCarrinho(filme)" href="#" block variant="dark">Alugar por {{filme.valor | formatarPreco("R$")}}</b-button>
           <b-button v-else class="btn" @click="adicionarAoCarrinho(filme)" href="#" block variant="danger" disabled>ESGOTADO</b-button>
@@ -142,15 +139,27 @@ export default {
 }
 
 .unitCard:hover{
-  border: rgb(7, 235, 56) 1px solid;
+  border: rgb(11, 212, 135) 2px solid;
 }
 .btn:hover{
-  background-color: blueviolet;
+  background-color: rgb(16, 90, 226);
 
 }
 
 .usuarioLogado{
   text-align: right;
+}
+
+#aberta {
+  color: rgb(11, 212, 135);
+}
+ 
+#proxima-fechar {
+  color: orange;
+}
+ 
+#fechada {
+  color: red;
 }
 
 

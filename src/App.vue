@@ -9,12 +9,19 @@
 
   </div> -->
   <b-container>
-    <b-row>
+
+  
+    <div class="usuarioLogado">
+      Olá {{nomeCompleto}} | Carrinho: {{quantidadeNoCarrinho}} filmes
+    </div>
+    
+
+    <!-- <b-row>
       <h2>{{ msg }}</h2>
-    </b-row>
+    </b-row> -->
 
     <b-row>
-      <HelloWorld msg="Bem vindo a locadora de Filmes!"/>
+      <HelloWorld msg="Filmes encontrados"/>
     </b-row>
 
     <b-row>
@@ -36,11 +43,12 @@
             {{filme.descricao | maiuscula()}}
           </b-card-text>
 
-          <b-card-text>
+          <!-- <b-card-text>
             {{filme.valor | formatarPreco("R$")}}
-          </b-card-text>
+          </b-card-text> -->
 
-          <b-button class="btn" href="#" block variant="primary">Alugar</b-button>
+          <b-button v-if="filme.estoqueDisponivel > 0" class="btn" @click="adicionarAoCarrinho(filme)" href="#" block variant="dark">Alugar por {{filme.valor | formatarPreco("R$")}}</b-button>
+          <b-button v-else class="btn" @click="adicionarAoCarrinho(filme)" href="#" block variant="danger" disabled>ESGOTADO</b-button>
         </b-card>
 
       </div>
@@ -66,13 +74,16 @@ export default {
     return {
       title: "Locado de Filmes",
       horas: new Date().getHours(),
+      primeiroNome: "Willian",
+      segundoNome: "Nascimento",
+      carrinho: [],
       filmes: [
-        { id: 1, titulo: "Homem de Ferro", descricao: "Onde nasce o herói", valor: 25, imagem: "https://i.imgur.com/OA8pDFM.jpeg" },
-        { id: 2, titulo: "Pantera Negra", descricao: "Um filme de panteras", valor: 35, imagem: "https://i.imgur.com/JOSEGKf.jpeg" },
-        { id: 3, titulo: "Homem-Formiga", descricao: "Um filme de formigas", valor: 20, imagem: "https://i.imgur.com/zdi4zcy.jpeg" },
-        { id: 4, titulo: "Capitã Marvel", descricao: "Um filme de capitãs", valor: 40, imagem: "https://i.imgur.com/39aIfzI.jpeg" },
-        { id: 5, titulo: "Hulk", descricao: "Um filme de força", valor: 10, imagem: "https://i.imgur.com/0uthCmp.jpeg" },
-        { id: 6, titulo: "Homem Aranha - Longe de Casa", descricao: "Um filme de aranhas voadoras", valor: 11, imagem: "https://i.imgur.com/H1cRygg.jpeg" }
+        { id: 1, estoqueDisponivel: 2, titulo: "Homem de Ferro", descricao: "Onde nasce o herói", valor: 25, imagem: "https://i.imgur.com/OA8pDFM.jpeg" },
+        { id: 2, estoqueDisponivel: 4, titulo: "Pantera Negra", descricao: "Um filme de panteras", valor: 35, imagem: "https://i.imgur.com/JOSEGKf.jpeg" },
+        { id: 3, estoqueDisponivel: 3, titulo: "Homem-Formiga", descricao: "Um filme de formigas", valor: 20, imagem: "https://i.imgur.com/zdi4zcy.jpeg" },
+        { id: 4, estoqueDisponivel: 9, titulo: "Capitã Marvel", descricao: "Um filme de capitãs", valor: 40, imagem: "https://i.imgur.com/39aIfzI.jpeg" },
+        { id: 5, estoqueDisponivel: 5, titulo: "Hulk", descricao: "Um filme de força", valor: 10, imagem: "https://i.imgur.com/0uthCmp.jpeg" },
+        { id: 6, estoqueDisponivel: 4, titulo: "Homem Aranha - Longe de Casa", descricao: "Um filme de aranhas voadoras", valor: 11, imagem: "https://i.imgur.com/H1cRygg.jpeg" }
       ]
     }
   },
@@ -85,6 +96,13 @@ export default {
       }else if(this.horas > 18){
         return "Está de noite";
       }
+    },
+    adicionarAoCarrinho: function(filme){
+      if(filme.estoqueDisponivel > 0){
+        this.carrinho.push(filme.id);
+        filme.estoqueDisponivel -= 1;
+      }
+      
     }
   },
   filters: {
@@ -97,6 +115,14 @@ export default {
     },
     maiuscula: function(string){
       return string.toUpperCase();
+    }
+  },
+  computed: {
+    nomeCompleto: function() {
+      return this.primeiroNome + ' ' + this.segundoNome;
+    },
+    quantidadeNoCarrinho: function(){
+      return this.carrinho.length;
     }
   }
 }
@@ -113,15 +139,18 @@ export default {
   flex-wrap: wrap;
   justify-content: space-around;
   text-align: center;
-  /* padding: 5px; */
 }
 
 .unitCard:hover{
-  border: rgb(7, 235, 56) 5px solid;
+  border: rgb(7, 235, 56) 1px solid;
 }
 .btn:hover{
   background-color: blueviolet;
 
+}
+
+.usuarioLogado{
+  text-align: right;
 }
 
 

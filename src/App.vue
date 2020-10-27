@@ -68,7 +68,7 @@
     </b-row>
     <b-row v-show="!mostrarFilmes">
       <b-row>
-        <b-table block striped hover :items="carrinho" :fields="campos"></b-table>
+        <b-table block fixed striped small head-variant="dark" :items="carrinho" :fields="campos"></b-table>
       </b-row>
     </b-row>
 

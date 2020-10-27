@@ -8,14 +8,25 @@
     </div>
 
   </div> -->
+
+  <div>
+
+  <b-navbar type="dark" variant="dark">
+    <b-navbar-nav>
+      <b-nav-item href="#" @click="mostrarFilmes = true">Home</b-nav-item>
+      <b-nav-item href="#" @click="mostrarFilmes = false">Carrinho: {{quantidadeNoCarrinho}} filmes</b-nav-item>
+    
+    </b-navbar-nav>
+  </b-navbar>
+  
   <b-container>
 
   
-    <div class="usuarioLogado">
+    <!-- <div class="usuarioLogado">
       Olá {{nomeCompleto}} | Carrinho: {{quantidadeNoCarrinho}} filmes
-    </div>
+    </div> -->
 
-    <b-row>
+    <b-row v-show="mostrarFilmes">
       <HelloWorld msg="Filmes encontrados"/>
     </b-row>
 
@@ -30,7 +41,7 @@
     </b-row>
 
     <b-row>
-      <div class="cards">
+      <div class="cards" v-show="mostrarFilmes">
         <b-card v-bind:key="filme.id" v-for="filme in filmes"
           :title="filme.titulo | maiuscula()"
           :img-src="filme.imagem"
@@ -44,14 +55,25 @@
             {{filme.descricao | maiuscula()}}
           </b-card-text>
 
-          <b-button v-if="filme.estoqueDisponivel > 0" class="btn" @click="adicionarAoCarrinho(filme)" href="#" block variant="dark">Alugar por {{filme.valor | formatarPreco("R$")}}</b-button>
+          <b-button v-if="filme.estoqueDisponivel > 1" class="btn" @click="adicionarAoCarrinho(filme)" href="#" block variant="dark">Alugar por {{filme.valor | formatarPreco("R$")}}</b-button>
+          <b-button v-else-if="filme.estoqueDisponivel == 1" class="btn" @click="adicionarAoCarrinho(filme)" href="#" block variant="warning">Última unidade por {{filme.valor | formatarPreco("R$")}}</b-button>
           <b-button v-else class="btn" @click="adicionarAoCarrinho(filme)" href="#" block variant="danger" disabled>ESGOTADO</b-button>
+          
         </b-card>
-
       </div>
     </b-row>
 
+    <b-row v-show="!mostrarFilmes">
+      <h2>Carrinho</h2>
+    </b-row>
+    <b-row v-show="!mostrarFilmes">
+      <b-row>
+        <b-table block striped hover :items="carrinho" :fields="campos"></b-table>
+      </b-row>
+    </b-row>
+
   </b-container>
+  </div>
 
 
 </template>
@@ -73,7 +95,9 @@ export default {
       horas: new Date().getHours(),
       primeiroNome: "Willian",
       segundoNome: "Nascimento",
+      mostrarFilmes: true,
       carrinho: [],
+      campos: ['titulo', 'valor', 'quantidade'],
       filmes: [
         { id: 1, estoqueDisponivel: 2, titulo: "Homem de Ferro", descricao: "Onde nasce o herói", valor: 25, imagem: "https://i.imgur.com/OA8pDFM.jpeg" },
         { id: 2, estoqueDisponivel: 4, titulo: "Pantera Negra", descricao: "Um filme de panteras", valor: 35, imagem: "https://i.imgur.com/JOSEGKf.jpeg" },
@@ -96,10 +120,10 @@ export default {
     },
     adicionarAoCarrinho: function(filme){
       if(filme.estoqueDisponivel > 0){
-        this.carrinho.push(filme.id);
+        this.carrinho.push(filme);
         filme.estoqueDisponivel -= 1;
       }
-      
+
     }
   },
   filters: {

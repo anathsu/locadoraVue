@@ -68,8 +68,10 @@
     </b-row>
     <b-row v-show="!mostrarFilmes">
       <b-row>
-        <b-table block fixed striped small head-variant="dark" :items="carrinho" :fields="campos"></b-table>
+        <h2>Resumo do Carrinho</h2>
+        <b-table block fixed striped hover small head-variant="dark" :items="carrinho" :fields="campos"></b-table>
       </b-row>
+      <b-row><p>Soma total do pedido: R$ {{somaPedido}},00</p></b-row>
     </b-row>
 
   </b-container>
@@ -97,7 +99,7 @@ export default {
       segundoNome: "Nascimento",
       mostrarFilmes: true,
       carrinho: [],
-      campos: ['titulo', 'valor', 'quantidade'],
+      campos: ['titulo', 'preço', 'quantidade'],
       filmes: [
         { id: 1, estoqueDisponivel: 2, titulo: "Homem de Ferro", descricao: "Onde nasce o herói", valor: 25, imagem: "https://i.imgur.com/OA8pDFM.jpeg" },
         { id: 2, estoqueDisponivel: 4, titulo: "Pantera Negra", descricao: "Um filme de panteras", valor: 35, imagem: "https://i.imgur.com/JOSEGKf.jpeg" },
@@ -120,7 +122,15 @@ export default {
     },
     adicionarAoCarrinho: function(filme){
       if(filme.estoqueDisponivel > 0){
-        this.carrinho.push(filme);
+        let indexFilme = this.carrinho.findIndex((obj) => obj.id == filme.id);
+        filme.quantidade = (filme.quantidade || 0) + 1
+
+        if(indexFilme == -1){
+          filme.preço = `R$ ${filme.valor},00`;
+          this.carrinho.push(filme)
+        }else{
+          this.carrinho.splice(indexFilme, 1, filme);
+        }
         filme.estoqueDisponivel -= 1;
       }
 
@@ -144,6 +154,19 @@ export default {
     },
     quantidadeNoCarrinho: function(){
       return this.carrinho.length;
+    },
+    somaPedido: function(){
+      return this.carrinho.reduce(function (accumulator, filme){
+        return accumulator + (filme.valor * filme.quantidade);
+      }, 0)
+
+
+      // let total = 0
+      // for(let filme of this.carrinho){
+      //   total += (filme.quantidade * filme.valor)
+      // }
+      // return 'R$'+ total + ',00';
+
     }
   }
 }

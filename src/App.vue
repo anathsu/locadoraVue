@@ -55,6 +55,12 @@
             {{filme.descricao | maiuscula()}}
           </b-card-text>
 
+          <b-card-text>
+              <b-icon icon="star-fill" variant="warning" v-for="estrelas in filme.avaliacao" :key="estrelas"></b-icon>
+              <b-icon icon="star" variant="warning" v-for="estrelas_vazadas in 5 - filme.avaliacao" :key="estrelas_vazadas"></b-icon>
+          </b-card-text>
+
+
           <b-button v-if="filme.estoqueDisponivel > 1" class="btn" @click="adicionarAoCarrinho(filme)" href="#" block variant="dark">Alugar por {{filme.valor | formatarPreco("R$")}}</b-button>
           <b-button v-else-if="filme.estoqueDisponivel == 1" class="btn" @click="adicionarAoCarrinho(filme)" href="#" block variant="warning">Última unidade por {{filme.valor | formatarPreco("R$")}}</b-button>
           <b-button v-else class="btn" @click="adicionarAoCarrinho(filme)" href="#" block variant="danger" disabled>ESGOTADO</b-button>
@@ -73,6 +79,145 @@
       </b-row>
       <b-row><p>Soma total do pedido: R$ {{somaPedido}},00</p></b-row>
     </b-row>
+
+
+
+    <b-row v-show="!mostrarFilmes">
+      <b-row>
+        <h2>Endereço de entrega</h2>
+      </b-row>
+
+      <div class="col-12">
+        <form>
+          <div class="form-group">
+            <label for="pedido.primeiroNome">Primeiro nome</label>
+            <input
+              type="text"
+              class="form-control"
+              id="primeiroNome"
+              placeholder="Digita o primeiro nome"
+              v-model.trim.lazy="pedido.primeiroNome"
+            >
+          </div>
+          <div class="form-group">
+            <label for="ultimoNome">Último nome</label>
+            <input
+              type="text"
+              class="form-control"
+              id="ultimoNome"
+              placeholder="Digite o último nome"
+              v-model.trim.lazy="pedido.ultimoNome"
+            >
+          </div>
+          <div class="form-group">
+            <label for="endereco">Endereço</label>
+            <input
+              type="text"
+              class="form-control"
+              id="endereco"
+              placeholder="Digita o endereço"
+              v-model.trim.lazy="pedido.endereco"
+            >
+          </div>
+          <div class="form-group">
+            <label for="cidade">Cidade</label>
+            <input
+              type="text"
+              class="form-control"
+              id="cidade"
+              placeholder="Digita a cidade"
+              v-model.trim.lazy="pedido.cidade"
+            >
+          </div>
+          <div class="form-group">
+            <label for="estado">Estado</label>
+            <select class="form-control" id="estado" v-model="pedido.estado">
+              <option disabled value>Escolha um estado</option>
+              <option
+                v-for="(estado, key) in estados"
+                v-bind:value="estado"
+                v-bind:key="key">
+                {{ key }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="cep">CEP</label>
+            <input
+              type="number"
+              class="form-control"
+              id="cep"
+              placeholder="Digita o CEP"
+              v-model.number="pedido.cep"
+            >
+          </div>
+          <div class="form-group form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="pagoNaEntrega"
+              v-bind:true-value="pedido.simNaEntrega"
+              v-bind:false-value="pedido.naoNaEntrega"
+              v-model="pedido.pagoNaEntrega"
+            >
+            <label class="form-check-label" for="pagoNaEntrega">Pago na entrega?</label>
+          </div>
+          <div class="form-group form-check-inline">
+            <input
+              type="radio"
+              class="form-check-input"
+              id="manha"
+              value="Manhã"
+              v-model="pedido.entrega"
+            >
+            <label class="form-check-label" for="manha">Manhã</label>
+          </div>
+          <div class="form-group form-check-inline">
+            <input
+              type="radio"
+              class="form-check-input"
+              id="tarde"
+              value="Tarde"
+              v-model="pedido.entrega"
+            >
+            <label class="form-check-label" for="tarde">Tarde</label>
+          </div>
+          <div class="form-group form-check-inline">
+            <input
+              type="radio"
+              class="form-check-input"
+              id="noite"
+              value="Noite"
+              v-model="pedido.entrega"
+            >
+            <label class="form-check-label" for="noite">Noite</label>
+          </div>
+
+          <div class="col-12">
+            <pre>
+              Primeiro nome: {{ pedido.primeiroNome }}
+              Último nome: {{ pedido.ultimoNome }}
+              Endereço: {{ pedido.endereco }}
+              Cidade: {{ pedido.cidade }}
+              Estado: {{ pedido.estado }}
+              CEP: {{ pedido.cep }}
+              Pago na entrega?: {{ pedido.pagoNaEntrega }}
+              Entrega: {{ pedido.entrega }}
+            </pre>
+          </div>
+          
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary" v-on:click="submitFormulario">
+              Finalizar pedido
+            </button>
+          </div>
+        </form>
+
+        
+        
+      </div>
+    </b-row>
+
 
   </b-container>
   </div>
@@ -101,13 +246,31 @@ export default {
       carrinho: [],
       campos: ['titulo', 'preço', 'quantidade'],
       filmes: [
-        { id: 1, estoqueDisponivel: 2, titulo: "Homem de Ferro", descricao: "Onde nasce o herói", valor: 25, imagem: "https://i.imgur.com/OA8pDFM.jpeg" },
-        { id: 2, estoqueDisponivel: 4, titulo: "Pantera Negra", descricao: "Um filme de panteras", valor: 35, imagem: "https://i.imgur.com/JOSEGKf.jpeg" },
-        { id: 3, estoqueDisponivel: 3, titulo: "Homem-Formiga", descricao: "Um filme de formigas", valor: 20, imagem: "https://i.imgur.com/zdi4zcy.jpeg" },
-        { id: 4, estoqueDisponivel: 9, titulo: "Capitã Marvel", descricao: "Um filme de capitãs", valor: 40, imagem: "https://i.imgur.com/39aIfzI.jpeg" },
-        { id: 5, estoqueDisponivel: 5, titulo: "Hulk", descricao: "Um filme de força", valor: 10, imagem: "https://i.imgur.com/0uthCmp.jpeg" },
-        { id: 6, estoqueDisponivel: 4, titulo: "Homem Aranha - Longe de Casa", descricao: "Um filme de aranhas voadoras", valor: 11, imagem: "https://i.imgur.com/H1cRygg.jpeg" }
-      ]
+        { id: 1, estoqueDisponivel: 2, titulo: "Homem de Ferro", descricao: "Onde nasce o herói", valor: 25, avaliacao: 5, imagem: "https://i.imgur.com/OA8pDFM.jpeg" },
+        { id: 2, estoqueDisponivel: 4, titulo: "Pantera Negra", descricao: "Um filme de panteras", valor: 35, avaliacao: 5, imagem: "https://i.imgur.com/JOSEGKf.jpeg" },
+        { id: 3, estoqueDisponivel: 3, titulo: "Homem-Formiga", descricao: "Um filme de formigas", valor: 20, avaliacao: 2, imagem: "https://i.imgur.com/zdi4zcy.jpeg" },
+        { id: 4, estoqueDisponivel: 9, titulo: "Capitã Marvel", descricao: "Um filme de capitãs", valor: 40, avaliacao: 3, imagem: "https://i.imgur.com/39aIfzI.jpeg" },
+        { id: 5, estoqueDisponivel: 5, titulo: "Hulk", descricao: "Um filme de força", valor: 10, avaliacao: 1, imagem: "https://i.imgur.com/0uthCmp.jpeg" },
+        { id: 6, estoqueDisponivel: 4, titulo: "Homem Aranha - Longe de Casa", descricao: "Um filme de aranhas voadoras", valor: 11, avaliacao: 4, imagem: "https://i.imgur.com/H1cRygg.jpeg" }
+      ],
+      pedido: {
+        primeiroNome: '',
+        ultimoNome: '',
+        endereco: '',
+        cidade: '',
+        estado: '',
+        cep: '',
+        pagoNaEntrega: "Não",
+        simNaEntrega: "Sim",
+        naoNaEntrega: "Não",
+        entrega: "Manhã"
+      },
+      estados: {
+        RJ: 'Rio de Janeiro',
+        MG: 'Minas Gerais',
+        SP: 'São Paulo',
+        ES: 'Espírito Santo'
+      }
     }
   },
   methods:{
@@ -133,6 +296,12 @@ export default {
         }
         filme.estoqueDisponivel -= 1;
       }
+
+    },
+    submitFormulario() {
+      alert('Pedido finalizado');
+    },
+    checarAvaliacao(){
 
     }
   },

@@ -1,8 +1,6 @@
 <template>
     <b-row>
-      <b-row>
         <h2>Endereço de entrega</h2>
-      </b-row>
 
         <div class="col-12">
             <form>
@@ -172,4 +170,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
+.row{
+    justify-content: left;
+}
 </style>

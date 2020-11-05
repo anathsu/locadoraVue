@@ -71,8 +71,10 @@
 
     <b-row v-show="!mostrarFilmes">
       <h2>Carrinho</h2>
-      <ResumoPedido :carrinho="carrinho" />
-      <DadosForm/>
+      <b-row class="block">
+        <ResumoPedido :carrinho="carrinho" />
+        <DadosForm/>
+      </b-row>
     </b-row>
 
 
@@ -207,6 +209,10 @@ export default {
  
 #fechada {
   color: red;
+}
+
+.block{
+  display: block;
 }
 
 

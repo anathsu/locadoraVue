@@ -42,7 +42,7 @@
 
     <b-row>
       <div class="cards" v-show="mostrarFilmes">
-        <b-card v-bind:key="filme.id" v-for="filme in filmes"
+        <b-card v-bind:key="filme.id" v-for="filme in filmesOrdenados"
           :title="filme.titulo | maiuscula()"
           :img-src="filme.imagem"
           :img-alt="filme.descricao"
@@ -336,6 +336,11 @@ export default {
       // }
       // return 'R$'+ total + ',00';
 
+    },
+    filmesOrdenados() {
+      return [...this.filmes].sort((a,b) => {
+        return (b.id < a.id) ? -1 : (b.id > a.id) ? 1 :0;
+      });
     }
   }
 }

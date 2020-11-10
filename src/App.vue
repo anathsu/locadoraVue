@@ -1,62 +1,40 @@
 <template>
-  <!-- <div id="app">
-    <h2>{{ msg }}</h2>
-    <HelloWorld msg="Bem vindo a locadora de Filmes!"/>
-
-    <div class="horas">
-      <p>{{dia()}}</p>
-    </div>
-
-  </div> -->
 
   <div>
 
-  <b-navbar type="dark" variant="dark">
-    <b-navbar-nav>
-      <b-nav-item href="#" @click="mostrarFilmes = true">Home</b-nav-item>
-      <b-nav-item href="#" @click="mostrarFilmes = false">Carrinho: {{quantidadeNoCarrinho}} filmes</b-nav-item>
-    
-    </b-navbar-nav>
-  </b-navbar>
+    <b-navbar type="dark" variant="dark">
+      <b-navbar-nav>
+        <b-nav-item href="#" @click="mostrarFilmes = true">Home</b-nav-item>
+        <b-nav-item href="#" @click="mostrarFilmes = false">Carrinho: {{quantidadeNoCarrinho}} filmes</b-nav-item>
+      
+      </b-navbar-nav>
+    </b-navbar>
   
-  <b-container>
+    <b-container>
 
-  
-    <!-- <div class="usuarioLogado">
-      Olá {{nomeCompleto}} | Carrinho: {{quantidadeNoCarrinho}} filmes
-    </div> -->
-
-    <b-row v-show="mostrarFilmes">
-      <HelloWorld msg="Filmes encontrados"/>
-    </b-row>
-
-    <!-- <b-row>
-      <p>{{dia()}}</p>
-    </b-row> -->
-
-    <b-row>
-      <h3 v-if="horas >= 9 && horas < 17" id="aberta">ABERTO</h3>
-      <h3 v-else-if="horas >= 17 && horas < 18" id="proxima-fechar">PRÓXIMA DE FECHAR</h3>
-      <h3 v-else id="fechada">FECHADA</h3>
-    </b-row>
-
-    <b-row v-show="mostrarFilmes">
-      <ListarFilmes :carrinho="carrinho"/>
-    </b-row>
-
-    <b-row v-show="!mostrarFilmes">
-      <h2>Carrinho</h2>
-      <b-row class="block">
-        <ResumoPedido :carrinho="carrinho" />
-        <DadosForm/>
+      <b-row v-show="mostrarFilmes">
+        <HelloWorld msg="Filmes encontrados"/>
       </b-row>
-    </b-row>
 
+      <b-row>
+        <h3 v-if="horas >= 9 && horas < 17" id="aberta">ABERTO</h3>
+        <h3 v-else-if="horas >= 17 && horas < 18" id="proxima-fechar">PRÓXIMA DE FECHAR</h3>
+        <h3 v-else id="fechada">FECHADA</h3>
+      </b-row>
 
-  </b-container>
+      <b-row v-show="mostrarFilmes">
+        <ListarFilmes :carrinho="carrinho"/>
+      </b-row>
+
+      <b-row v-show="!mostrarFilmes">
+        <h2>Carrinho</h2>
+        <b-row class="block">
+          <ResumoPedido :carrinho="carrinho" />
+          <DadosForm/>
+        </b-row>
+      </b-row>
+    </b-container>
   </div>
-
-
 </template>
 
 <script>
@@ -152,15 +130,4 @@ export default {
 .block{
   display: block;
 }
-
-
-
-/* #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-} */
 </style>

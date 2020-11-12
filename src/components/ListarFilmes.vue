@@ -90,6 +90,7 @@ export default {
         if (indexFilme == -1) {
           filme.preço = `R$ ${filme.valor},00`;
           carrinho_local.push(filme);
+          // Duvida como eu atualizo carrinho de APP
           this.$emit("update:carrinho", carrinho_local);
         } else {
           carrinho_local.splice(indexFilme, 1, filme);

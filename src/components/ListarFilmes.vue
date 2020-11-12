@@ -114,7 +114,7 @@ export default {
   computed: {
     filmesOrdenados() {
       return [...this.filmes].sort((a, b) => {
-        return b.id < a.id ? -1 : b.id > a.id ? 1 : 0;
+        return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
       });
     },
   },

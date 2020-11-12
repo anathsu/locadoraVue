@@ -1,14 +1,7 @@
 <template>
 
   <div>
-
-    <b-navbar type="dark" variant="dark">
-      <b-navbar-nav>
-        <b-nav-item href="#" @click="mostrarFilmes = true">Home</b-nav-item>
-        <b-nav-item href="#" @click="mostrarFilmes = false">Carrinho: {{quantidadeNoCarrinho}} filmes</b-nav-item>
-      
-      </b-navbar-nav>
-    </b-navbar>
+    <Header :controla_aba="controla_aba" :quantidadeNoCarrinho="quantidadeNoCarrinho"/>
   
     <b-container>
 
@@ -45,6 +38,7 @@ import HelloWorld from './components/HelloWorld.vue'
 import DadosForm from './components/DadosForm.vue'
 import ResumoPedido from './components/ResumoPedido.vue'
 import ListarFilmes from './components/ListarFilmes.vue'
+import Header from "./components/Header.vue";
 
 
 export default {
@@ -54,6 +48,7 @@ export default {
     DadosForm,
     ResumoPedido,
     ListarFilmes,
+    Header
   }, data(){
     return {
       title: "Locado de Filmes",
@@ -75,7 +70,10 @@ export default {
       }
     },
     checarAvaliacao(){
-    }
+    },
+    controla_aba(valor){
+      this.mostrarFilmes=valor
+    },
   },
   filters: {
   },

@@ -11,8 +11,9 @@
       style="max-width: 20rem"
       class="mb-2 unitCard"
     >
+
       <b-card-text>
-        {{ filme.descricao | maiuscula() }}
+        <router-link tag="p" :to="{name : 'filme', params : {id: filme.id, filme : filme }}">{{ filme.descricao | maiuscula() }}</router-link>
       </b-card-text>
 
       <b-card-text>

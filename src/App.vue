@@ -1,5 +1,4 @@
 <template>
-
   <div>
     <Header :quantidadeNoCarrinho='quantidadeNoCarrinho'/>
     <router-view/>
@@ -33,5 +32,14 @@ export default {
 </script>
 
 <style>
+
+a{
+  font-size: 1em;
+  color: rgb(190, 189, 189);
+}
+
+a:hover{
+  color: aqua;
+}
 
 </style>
